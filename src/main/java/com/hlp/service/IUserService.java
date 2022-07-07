@@ -1,5 +1,7 @@
 package com.hlp.service;
 
+import com.hlp.common.Result;
+import com.hlp.controller.dto.UserDTO;
 import com.hlp.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
+    UserDTO login(UserDTO userDTO);
 }
