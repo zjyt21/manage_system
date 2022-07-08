@@ -11,16 +11,18 @@
 
     <el-dropdown style="width: 100px; cursor: pointer">
       <div>
-        <img src="../assets/logo.png" alt=""
+        <img :src="user.avatar" alt=""
              style="width: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px">
-        <span>王小虎</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
+        <span>{{ user.nickname }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
       </div>
       
       <el-dropdown-menu slot="dropdown" style="widows: 100px; text-align: center;">
-        <el-dropdown-item style="font-size: 14px; padding: 5px 0;" class="el-icon-user-solid">个人信息</el-dropdown-item>
+        <el-dropdown-item style="font-size: 14px; padding: 5px 0;" class="el-icon-user-solid">
+        <router-link to="/person">个人信息</router-link>
+        </el-dropdown-item>
         <br>
         <el-dropdown-item style="font-size: 14px; padding: 5px 0;" class="el-icon-right">
-          <router-link to="/login" style="text-decoration: none;">退出</router-link>
+          <span style="text-decoration: none;" @click="logout">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -30,10 +32,21 @@
 <script>
   export default {
     name:"Header",
-
+    data() {
+      return {
+        user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
+      }
+    },
     props:{
       collapseBtnClass:String,
       collapse:Function
+    },
+    methods: {
+      logout(){
+        this.$router.push("/login")
+        localStorage.removeItem("user")
+        this.$message.success("退出成功")
+      }
     },
   }
 </script>

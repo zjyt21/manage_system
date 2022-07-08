@@ -16,8 +16,10 @@ import com.hlp.entity.User;
 import com.hlp.service.IUserService;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -41,31 +43,31 @@ public class UserController {
 
     //查询所有user
     @GetMapping
-    public List<User> allUser(){
-        return iUserService.list();
+    public Result allUser(){
+        return Result.success(iUserService.list());
     }
 
     //新增和修改user
     @PostMapping
-    public boolean saveOrUpdateUser(@RequestBody User user){
-        return iUserService.saveOrUpdate(user);
+    public Result saveOrUpdateUser(@RequestBody User user){
+        return Result.normal(iUserService.saveOrUpdate(user));
     }
 
     //批量删除
     @PostMapping("/batch")
-    public boolean deleteBatch(@RequestBody List<Integer> ids){
-        return iUserService.removeByIds(ids);
+    public Result deleteBatch(@RequestBody List<Integer> ids){
+        return Result.normal(iUserService.removeByIds(ids));
     }
 
     //删除user
     @DeleteMapping("{id}")
-    public boolean deleteUserById(@PathVariable Integer id){
-        return iUserService.removeById(id);
+    public Result deleteUserById(@PathVariable Integer id){
+        return Result.normal(iUserService.removeById(id));
     }
 
     //分页查询
     @GetMapping("/page")
-    public IPage<User> pageSelect(@RequestParam int currentPage,
+    public Result pageSelect(@RequestParam int currentPage,
                                   @RequestParam int pageSize,
                                   @RequestParam(defaultValue = "") String username,
                                   @RequestParam(defaultValue = "") String email,
@@ -80,7 +82,7 @@ public class UserController {
         lqw.orderByDesc(User::getId);
         IPage<User> page = new Page(currentPage, pageSize);
         iUserService.page(page, lqw);
-        return page;
+        return Result.success(page);
     }
 
     //导出接口
@@ -109,15 +111,15 @@ public class UserController {
 
     //导入
     @PostMapping("/import")
-    public boolean imp(MultipartFile file) throws Exception {
+    public Result imp(MultipartFile file) throws Exception {
         InputStream inputStream = file.getInputStream();
         ExcelReader reader = ExcelUtil.getReader(inputStream);
 
         List<User> list = reader.readAll(User.class);
-        return iUserService.saveBatch(list);
+        return Result.normal(iUserService.saveBatch(list));
     }
 
-    //
+    //登录
     @PostMapping("/login")
     public Result login(@RequestBody UserDTO userDTO) {
         String username = userDTO.getUsername();
@@ -127,5 +129,24 @@ public class UserController {
         }
         UserDTO dto = iUserService.login(userDTO);
         return Result.success(dto);
+    }
+
+    //注册
+    @PostMapping("/register")
+    public Result register(@RequestBody UserDTO userDTO){
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+        if(StrUtil.isBlank(username) || StrUtil.isBlank(password)){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(iUserService.register(userDTO));
+    }
+
+    //通过用户名获取用户信息
+    @GetMapping("/username/{username}")
+    public Result findOne(@PathVariable String username){
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(Strings.isNotBlank(username), User::getUsername, username);
+        return Result.success(iUserService.getOne(lqw));
     }
 }

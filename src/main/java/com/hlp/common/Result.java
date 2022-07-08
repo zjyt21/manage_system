@@ -18,9 +18,18 @@ public class Result {
     private String msg;
     private Object data;
 
+    public static Result normal(boolean flag){
+        if(flag){
+            return success();
+        }else {
+            return error();
+        }
+    }
+
     public static Result success(){
         return new Result(Constants.CODE_200, "", null);
     }
+
 
     public static Result success(Object data){
         return new Result(Constants.CODE_200, "", data);

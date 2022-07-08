@@ -68,7 +68,7 @@
         @current-change="handleCurrentChange"
         :current-page="pageNum"
         :page-sizes="[5, 10, 20]"
-        :page-size="2"
+        :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
@@ -108,7 +108,7 @@
         tableData:[],
         total:0,
         pageNum:1,
-        pageSize:10,
+        pageSize:5,
         username:"",
         email:"",
         address:"",
@@ -132,9 +132,8 @@
           address:this.address,
         }
         }).then(res => {
-          console.log(res)
-          this.tableData = res.records
-          this.total = res.total
+          this.tableData = res.data.records
+          this.total = res.data.total
         })
       },
       handleSizeChange(pageSize){
@@ -157,7 +156,7 @@
       },
       save(){
         this.request.post("/user", this.form).then(res => {
-          if(res){
+          if(res.code == '200'){
             this.$message.success("保存成功")
             this.dialogFormVisible = false;
             this.loadPage()
@@ -172,7 +171,7 @@
       },
       del(id){
         this.request.delete("/user/" + id).then(res => {
-          if(res){
+          if(res.code == '200'){
             this.$message.success("删除成功")
             this.loadPage()
           }else{
@@ -186,7 +185,7 @@
       delBatch(){
         let ids = this.multipleSelection.map(v => v.id)
         this.request.post("/user/batch", ids).then(res => {
-          if(res){
+          if(res.code == '200'){
             this.$message.success("批量删除成功")
             this.loadPage()
           }else{
