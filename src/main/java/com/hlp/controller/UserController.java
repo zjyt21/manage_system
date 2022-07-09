@@ -14,6 +14,7 @@ import com.hlp.common.Result;
 import com.hlp.controller.dto.UserDTO;
 import com.hlp.entity.User;
 import com.hlp.service.IUserService;
+import com.hlp.util.TokenUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -82,6 +83,9 @@ public class UserController {
         lqw.orderByDesc(User::getId);
         IPage<User> page = new Page(currentPage, pageSize);
         iUserService.page(page, lqw);
+        //获取当前用户信息
+        User currentUser = TokenUtils.getCurrentUser();
+        System.out.println("获取当前用户信息=============" + currentUser.getNickname());
         return Result.success(page);
     }
 

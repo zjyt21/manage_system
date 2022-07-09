@@ -9,14 +9,14 @@
       </el-breadcrumb>
     </div>
 
-    <el-dropdown style="width: 100px; cursor: pointer">
+    <el-dropdown style="width: 150px; cursor: pointer; text-align: right;">
       <div>
         <img :src="user.avatar" alt=""
              style="width: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px">
         <span>{{ user.nickname }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
       </div>
       
-      <el-dropdown-menu slot="dropdown" style="widows: 100px; text-align: center;">
+      <el-dropdown-menu slot="dropdown" style="width: 100px; text-align: center;">
         <el-dropdown-item style="font-size: 14px; padding: 5px 0;" class="el-icon-user-solid">
         <router-link to="/person">个人信息</router-link>
         </el-dropdown-item>

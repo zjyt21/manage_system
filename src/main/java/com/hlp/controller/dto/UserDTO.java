@@ -30,4 +30,6 @@ public class UserDTO {
     @ApiModelProperty(value = "头像")
     @Alias("头像")
     private String avatar;
+
+    private String token;
 }

@@ -10,6 +10,7 @@ import com.hlp.exception.ServiceException;
 import com.hlp.mapper.UserMapper;
 import com.hlp.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hlp.util.TokenUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User one = getUserInfo(userDTO);
         if(one != null){
             BeanUtils.copyProperties(one, userDTO);
+            //设置token
+            String token = TokenUtils.getToken(one.getId().toString(), one.getPassword());
+            userDTO.setToken(token);
             return userDTO;
         }else{
             throw new ServiceException(Constants.CODE_600, "用户名或密码错误");
