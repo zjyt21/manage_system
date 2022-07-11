@@ -1,5 +1,6 @@
 package com.hlp.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -42,10 +43,12 @@ public class Files implements Serializable {
     private String url;
 
     @ApiModelProperty(value = "是否删除")
-    private Boolean isDelete;
+//    @TableLogic(value = "0", delval = "1") 在yml中配置了就不用写了
+    private Boolean deleted;
 
     @ApiModelProperty(value = "是否禁用链接")
     private Boolean enable;
 
-
+    @ApiModelProperty(value = "文件md5")
+    private String md5;
 }

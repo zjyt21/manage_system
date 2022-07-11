@@ -27,7 +27,14 @@
             <span>用户管理</span>
         </template>
       </el-menu-item>
+      <el-menu-item index="/file">
+        <i class="el-icon-document"></i>
+        <template slot="title">
+          <span>文件管理</span>
+        </template>
+      </el-menu-item>
     </el-submenu>
+    
   </el-menu>
 </template>
 

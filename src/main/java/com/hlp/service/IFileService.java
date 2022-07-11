@@ -1,7 +1,7 @@
 package com.hlp.service;
 
-import com.hlp.entity.Files;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hlp.entity.Files;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author hlp
- * @since 2022-07-10
+ * @since 2022-07-11
  */
 public interface IFileService extends IService<Files> {
 
