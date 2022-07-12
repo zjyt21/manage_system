@@ -32,14 +32,11 @@
 <script>
   export default {
     name:"Header",
-    data() {
-      return {
-        user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
-      }
-    },
+
     props:{
       collapseBtnClass:String,
-      collapse:Function
+      collapse:Function,
+      user: Object
     },
     methods: {
       logout(){
